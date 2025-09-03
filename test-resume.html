@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Download Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .test-link { display: block; margin: 20px 0; padding: 10px; background: #f0f0f0; text-decoration: none; color: #333; }
+        .test-link:hover { background: #e0e0e0; }
+    </style>
+</head>
+<body>
+    <h1>Resume Download Test Page</h1>
+    <p>This page tests different ways to link to your resume file:</p>
+    
+    <h2>Test Links:</h2>
+    
+    <a href="./resume/newResumeGaurav.pdf" class="test-link" target="_blank">
+        Test 1: ./resume/newResumeGaurav.pdf (with ./)
+    </a>
+    
+    <a href="resume/newResumeGaurav.pdf" class="test-link" target="_blank">
+        Test 2: resume/newResumeGaurav.pdf (without ./)
+    </a>
+    
+    <a href="./resume/newResumeGaurav.pdf" class="test-link" download="Gaurav_Singh_Resume.pdf">
+        Test 3: Download with download attribute
+    </a>
+    
+    <a href="resume/newResumeGaurav.pdf" class="test-link" download="Gaurav_Singh_Resume.pdf">
+        Test 4: Download without ./ prefix
+    </a>
+    
+    <h2>File Information:</h2>
+    <p>File path: resume/newResumeGaurav.pdf</p>
+    <p>File size: 72,378 bytes (71 KB)</p>
+    
+    <h2>Troubleshooting:</h2>
+    <ul>
+        <li>If none of the links work, the issue might be with GitHub Pages configuration</li>
+        <li>Check if the resume folder is properly committed and pushed to GitHub</li>
+        <li>Verify the PDF file is not corrupted</li>
+        <li>Try accessing the direct URL: yourusername.github.io/yourrepo/resume/newResumeGaurav.pdf</li>
+    </ul>
+    
+    <p><a href="index.html">← Back to Portfolio</a></p>
+</body>
+</html>

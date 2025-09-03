@@ -323,3 +323,46 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+
+// Resume download test function
+function testResumeDownload() {
+    const resumePath = './resume/newResumeGaurav.pdf';
+    
+    // Test if the file exists
+    fetch(resumePath)
+        .then(response => {
+            if (response.ok) {
+                console.log('✅ Resume file is accessible');
+                console.log('File size:', response.headers.get('content-length'), 'bytes');
+                console.log('Content type:', response.headers.get('content-type'));
+            } else {
+                console.error('❌ Resume file not found:', response.status, response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('❌ Error accessing resume file:', error);
+        });
+}
+
+// Add click event listeners to resume download buttons
+document.addEventListener('DOMContentLoaded', function() {
+    const resumeButtons = document.querySelectorAll('a[href*="newResumeGaurav.pdf"]');
+    
+    resumeButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            console.log('🖱️ Resume download button clicked');
+            console.log('Button href:', this.href);
+            
+            // Test the download
+            testResumeDownload();
+            
+            // Add a small delay to allow the download to start
+            setTimeout(() => {
+                console.log('⏱️ Download should have started by now');
+            }, 1000);
+        });
+    });
+    
+    // Test resume accessibility on page load
+    testResumeDownload();
+});

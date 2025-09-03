@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Download Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        .debug-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        .warning { background: #fff3cd; border-color: #ffeaa7; }
+        .test-button { display: inline-block; margin: 10px; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; }
+        .test-button:hover { background: #0056b3; }
+        .log { background: #f8f9fa; padding: 10px; border-radius: 3px; font-family: monospace; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Resume Download Debug Page</h1>
+    
+    <div class="debug-section">
+        <h2>📋 Current Status</h2>
+        <div id="status">Checking...</div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>🧪 Test Downloads</h2>
+        <p>Try these different download methods:</p>
+        
+        <a href="./resume/newResumeGaurav.pdf" class="test-button" target="_blank">
+            Method 1: Direct Link (New Tab)
+        </a>
+        
+        <a href="./resume/newResumeGaurav.pdf" class="test-button" download="Gaurav_Singh_Resume.pdf">
+            Method 2: Download Attribute
+        </a>
+        
+        <a href="resume/newResumeGaurav.pdf" class="test-button" target="_blank">
+            Method 3: Relative Path
+        </a>
+        
+        <button onclick="testResumeDownload()" class="test-button" style="border: none; cursor: pointer;">
+            Method 4: JavaScript Test
+        </button>
+    </div>
+    
+    <div class="debug-section">
+        <h2>📊 File Information</h2>
+        <div id="fileInfo">Loading...</div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>🔧 Troubleshooting Steps</h2>
+        <ol>
+            <li><strong>Check GitHub Repository:</strong> Ensure the resume folder and PDF file are committed and pushed</li>
+            <li><strong>Verify File Path:</strong> The file should be at: <code>resume/newResumeGaurav.pdf</code></li>
+            <li><strong>Check GitHub Pages:</strong> Make sure GitHub Pages is enabled and deployed</li>
+            <li><strong>File Permissions:</strong> Ensure the PDF file is not corrupted</li>
+            <li><strong>Browser Console:</strong> Check for any JavaScript errors</li>
+        </ol>
+    </div>
+    
+    <div class="debug-section">
+        <h2>📝 Console Logs</h2>
+        <div id="consoleLog" class="log">Console logs will appear here...</div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>🔗 Direct URLs to Test</h2>
+        <p>Try accessing these URLs directly in your browser:</p>
+        <ul>
+            <li><code>https://yourusername.github.io/yourrepo/resume/newResumeGaurav.pdf</code></li>
+            <li><code>https://yourusername.github.io/yourrepo/resume/newResumeGaurav.pdf</code></li>
+        </ul>
+        <p><em>Replace 'yourusername' and 'yourrepo' with your actual GitHub username and repository name.</em></p>
+    </div>
+    
+    <p><a href="index.html">← Back to Portfolio</a></p>
+
+    <script>
+        // Override console.log to display in the page
+        const originalLog = console.log;
+        const originalError = console.error;
+        const logDiv = document.getElementById('consoleLog');
+        
+        function addToLog(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `<span style="color: #666;">[${timestamp}]</span> <span style="color: ${type === 'error' ? 'red' : 'blue'};">${message}</span>`;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToLog(args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToLog(args.join(' '), 'error');
+        };
+        
+        // Test resume download functionality
+        function testResumeDownload() {
+            const resumePath = './resume/newResumeGaurav.pdf';
+            const statusDiv = document.getElementById('status');
+            const fileInfoDiv = document.getElementById('fileInfo');
+            
+            console.log('🧪 Testing resume download...');
+            statusDiv.innerHTML = '<span style="color: orange;">🔄 Testing...</span>';
+            
+            // Test if the file exists
+            fetch(resumePath)
+                .then(response => {
+                    if (response.ok) {
+                        console.log('✅ Resume file is accessible');
+                        console.log('File size:', response.headers.get('content-length'), 'bytes');
+                        console.log('Content type:', response.headers.get('content-type'));
+                        
+                        statusDiv.innerHTML = '<span style="color: green;">✅ Resume file is accessible</span>';
+                        
+                        // Display file information
+                        const fileSize = response.headers.get('content-length');
+                        const contentType = response.headers.get('content-type');
+                        fileInfoDiv.innerHTML = `
+                            <p><strong>Status:</strong> ✅ File found and accessible</p>
+                            <p><strong>File size:</strong> ${fileSize} bytes (${Math.round(fileSize/1024)} KB)</p>
+                            <p><strong>Content type:</strong> ${contentType}</p>
+                            <p><strong>Path:</strong> ${resumePath}</p>
+                        `;
+                    } else {
+                        console.error('❌ Resume file not found:', response.status, response.statusText);
+                        statusDiv.innerHTML = `<span style="color: red;">❌ File not found (${response.status})</span>`;
+                        fileInfoDiv.innerHTML = `
+                            <p><strong>Status:</strong> ❌ File not found</p>
+                            <p><strong>Error:</strong> ${response.status} ${response.statusText}</p>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error accessing resume file:', error);
+                    statusDiv.innerHTML = '<span style="color: red;">❌ Network error</span>';
+                    fileInfoDiv.innerHTML = `
+                        <p><strong>Status:</strong> ❌ Network error</p>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                    `;
+                });
+        }
+        
+        // Test on page load
+        window.addEventListener('load', function() {
+            console.log('🚀 Debug page loaded');
+            testResumeDownload();
+        });
+    </script>
+</body>
+</html>
